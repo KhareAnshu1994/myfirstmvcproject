@@ -1,0 +1,180 @@
+﻿@model Assesment.Models.ProjectDatamodel
+
+@{
+
+
+    Layout = "~/Views/Shared/_Layoutindex.cshtml";
+
+}
+
+
+
+
+<style>
+    #content {
+        margin: 0 auto;
+        width: 960px;
+        background-color: greenyellow
+    }
+
+        #content h1 {
+            text-align: center;
+            text-decoration: underline;
+        }
+
+    table {
+        width: 100%;
+        height: 40%;
+    }
+
+        table tr td {
+            width: 40%;
+            text-align: center;
+        }
+
+    #errorDiv {
+        background-color: red;
+        color: #FFFFFF;
+        padding-left: 30px;
+    }
+</style>
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://momentjs.com/downloads/moment.js"></script>
+
+
+<script type="text/javascript">
+
+    function update() {
+
+        var name = document.getElementById("Name").value;
+        var decr = document.getElementById("Description").value;
+        var status = document.getElementById("Status").value;
+        var date = document.getElementById("Completed").value;
+        var projectid = document.getElementById("projectid").value;
+
+
+        frmData = new FormData();
+        frmData.append("Id", projectid);
+        frmData.append("Project_Name", name);
+        frmData.append("Project_Description", decr);
+        frmData.append("Project_Status", status);
+        frmData.append("Project_Completed", date);
+
+        $.ajax({
+            url: "/Project/UpdateProject",
+            type: "put",
+            data: frmData,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            success: function (result) {
+
+                if (result["status"] == true) {
+                    document.getElementById("updated").innerHTML = "status:true";
+                    document.getElementById("updated").innerHTML = result["message"];
+
+
+                }
+                else {
+                    document.getElementById("updated").innerHTML = "status:true";
+                    document.getElementById("updated").innerHTML = result["message"]
+
+                }
+
+
+            },
+            error: function () {
+
+                alert("Please Fill the form Correctly");
+            }
+
+
+
+        });
+    }
+</script>
+
+
+
+
+<div id="content">
+    <h1>Project Details</h1>
+    <div id="errorDiv"></div>
+    <table>
+        <tr>
+            <td>Project Name:-</td>
+            <td><input type="text" placeholder=" Mention your Project" id="Name" value="@Model.Project_Name"><div id="div1"></div></td>
+        </tr>
+        <tr>
+
+            <td>Project Status: -</td>
+            <td>
+                <select id="Status">
+                    <option value="">Select an Option</option>
+                    @if (Model.Project_Status == "completed")
+                    {
+
+                        <option value="completed" selected>completed</option>
+                    }
+                    else
+                    {
+
+                        <option value="completed">completed</option>
+                    }
+                    @if (Model.Project_Status == "progress")
+                    {
+
+
+                        <option value="progress" selected>progress</option>
+                    }
+                    else
+                    {
+
+                        <option value="progress">progress</option>
+
+                    }
+                    @if (Model.Project_Status == "pending")
+                    {
+
+                        <option value="pending" selected>pending</option>
+
+                    }
+
+                    else
+                    {
+
+                        <option value="pending">pending</option>
+                    }
+
+                </select> <div id="div2"></div>
+            </td>
+        </tr>
+        <tr>
+            <td>Project Completed:-</td>
+
+            <td><input type="date" id="Completed" value="@Model.Project_Completed_formated"> <div id="div3"></div></td>
+        </tr>
+        <tr>
+            <br />
+            <td>Project Description:-</td>
+            <td>
+                <textarea rows="4" cols="50" name="comment" id="Description" style=" margin-left:150px; margin-top;">@Model.Project_Description</textarea>
+                <div id="div4"></div>
+            </td>
+        </tr>
+
+        <input type="hidden" id="projectid" value="@Model.Id" />
+
+        <tr>
+            <div id="updated">
+            <td colspan="2"><input type="button" id="Message" value="Update" onclick="update()">  </td>
+</div>
+
+        </tr>
+    </table>
+</div>

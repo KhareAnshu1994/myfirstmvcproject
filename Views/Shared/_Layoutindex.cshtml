@@ -1,0 +1,27 @@
+﻿<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Assignment</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body style="background-color:aqua">
+    <header style="color: coral; position: absolute; top: 8px; right: 16px; font-size: 18px;" >
+        <h3>Project Table</h3> 
+    </header><br />
+    <div>
+        @RenderBody()
+    </div>
+
+    <footer class="border-top footer text-muted" style="background-color:green">
+        <h3 style="color:black;">
+            © Copyright 2020-2021 | All Rights Reserved | Mishra Group of Companies
+        </h3>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

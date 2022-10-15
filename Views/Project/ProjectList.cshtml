@@ -1,0 +1,55 @@
+﻿<table>
+    <tr>
+        <th>Id</th>
+        <th>Project_Name</th>
+        <th>Project_Status</th>
+        <th>Project_Description</th>
+        <th>Project_Completed</th>
+        <th>Modify</th>
+    </tr>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td> @item.Id</td>
+
+
+                <td> @item.Project_Name</td>
+
+
+
+
+                <td> @item.Project_Status</td>
+
+
+                <td> @item.Project_Description</td>
+
+
+
+                <td>@item.Project_Completed</td>
+
+                <td>
+                    <a href="/Project/Update?id=@item.Id">Update</a>
+
+                    <button onclick="deletefunction(@item.Id)" style="color:red">Delete</button>
+
+                    <button onclick="projectEdit(@item.Id)" class="submit">Edit</button>
+
+                </td>
+
+
+
+            </tr>
+
+
+        }
+
+
+    </tbody>
+
+    
+
+
+
+</table>

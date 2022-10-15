@@ -1,0 +1,482 @@
+﻿@model IEnumerable<Assesment.Models.ProjectDatamodel>
+
+@{
+
+
+    Layout = "~/Views/Shared/_Layoutindex.cshtml";
+
+}
+<style>
+    table, td, th {
+        border: 1px solid black;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+</style>
+
+<select id="projectStatusFilter" onchange="loadView_projectprocess_status()">
+    <option value="">Select an Option</option>
+    <option value="completed">completed</option>
+    <option value="progress">progress</option>
+    <option value="pending">pending</option>
+</select> <div id="div2"></div>
+<center>
+    <button onclick=""class="submit mb-5" data-toggle="modal" data-target="#myModal"> New User </button>
+</center>
+<br />
+
+
+
+
+<div id="projectContainer">
+
+    @Html.Partial("ProjectList", Model);
+</div>
+
+
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 571px; height: 504px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Project Details</h3>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+
+            </div>
+            <div class="modal-body">
+
+                <label><b> Project Name:</b></label> <input type="text" placeholder=" Mention your Project" id="Name"><div id="div1"></div>
+                <br /> <br />
+
+                <label><b>  Project Status: </b></label>
+
+                <select id="Status">
+                    <option value="">Select an Option</option>
+                    <option value="completed">completed</option>
+                    <option value="progress">progress</option>
+                    <option value="pending">pending</option>
+                </select> <div id="div2"></div>
+
+                <br />
+
+                <label><b>Project Completed: :</b></label><input type="date" id="Completed"> <div id="div3"></div> <br />
+
+                <p><b>Project Description :</b></p><textarea rows="5" cols="30" placeholder="Write Project Description." id="Description">
+            </textarea> <div id="div4"></div><br /><br />
+
+
+
+            </div>
+
+            <div class="d-flex justify-content-center mb-5">
+                <a href="#" class="btn btn-default w-25 border-dark" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-success w-25 ml-4" onclick="xyz()">Add</a> <div id="success">
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <input type="hidden" id="hiddenprojectid2" />
+
+</div>
+
+
+<div class="modal fade" id="myModal2">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 571px; height: 504px;">
+            <div class="modal-header">
+                <h3 class="modal-title">Project Details</h3>
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+
+            </div>
+            <div class="modal-body">
+
+                <label><b> Project Name:</b></label> <input type="text" placeholder=" Mention your Project" id="Name2"><div id="div1"></div>
+                <br /> <br />
+
+                <label><b>  Project Status: </b></label>
+
+                <select id="Status2">
+                    <option value="">Select an Option</option>
+                    <option value="completed">completed</option>
+                    <option value="progress">progress</option>
+                    <option value="pending">pending</option>
+                </select> <div id="div2"></div>
+
+                <br />
+
+                <label><b>Project Completed: :</b></label><input type="date" id="Completed2"> <div id="div3"></div> <br />
+
+                <p><b>Project Description :</b></p><textarea rows="5" cols="30" placeholder="Write Project Description." id="Description2">
+            </textarea> <div id="div4"></div><br /><br />
+
+
+
+            </div>
+
+            <div class="d-flex justify-content-center mb-5">
+                <a href="#" class="btn btn-default w-25 border-dark" data-dismiss="modal">Cancel</a>
+                <a href="#" class="btn btn-success w-25 ml-4" onclick="updatefunction()">Update</a> <div id="success">
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    <input type="hidden" id="hiddenprojectid2" />
+
+</div>
+<input type="hidden" id="hiddenprojectid2" />
+
+    </div>
+
+
+
+<script src="https://momentjs.com/downloads/moment.js"></script>
+<script>
+    function xyz() {
+        var status = true;
+        var project_Name = document.getElementById("Name").value;
+        var project_Status = document.getElementById("Status").value;
+        var project_Completed = document.getElementById("Completed").value;
+        var project_Description = document.getElementById("Description").value;
+
+        var frmData;
+        if (status == true) {
+
+            frmData = new FormData();
+
+            frmData.append("Project_Name", project_Name);
+            frmData.append("Project_Status", project_Status);
+            frmData.append("Project_Completed", project_Completed);
+            frmData.append("Project_Description", project_Description);
+
+
+        }
+        console.log(frmData)
+
+
+        $.ajax({
+
+            url: "/Project/SaveProject",
+            type: "Post",
+            data: frmData,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function click(result) {
+                $("#loaderDiv").hide();
+
+                $("#myModal").modal('hide');
+                if (result["status"] == true) {
+
+
+
+                    alert("Added Succesfully")
+
+                    loadView();
+                }
+                else {
+
+
+                    alert("Not Added")
+
+
+                }
+
+
+            },
+            error: function () {
+
+                alert("Please Fill the form Correctly");
+            }
+        }
+
+        );
+
+
+
+    }
+
+
+
+</script>
+
+
+<script src="https://momentjs.com/downloads/moment.js"></script>
+
+<script>
+    function loadView() {
+
+        $.ajax({
+
+            url: "/Project/ProjectList",
+            type: "Post",
+
+            contentType: false,
+            processData: false,
+            dataType: "html",
+            success: function click(result) {
+
+                $("#projectContainer").html(result);
+
+            },
+            error: function () {
+
+                alert("Please fill the form correctly");
+            }
+
+
+        }
+        );
+    }
+   
+    function loadView_projectprocess_status()
+
+    {
+       
+
+        var Project_Status = $("#projectStatusFilter").val();
+        var frmData;
+        frmData = new FormData();
+
+        frmData.append("Project_Status", Project_Status);
+
+        $.ajax({
+
+            url: "/Project/getdatabyDropdownselection" ,
+            type: "post",
+         
+            data: frmData,
+            contentType: false,
+            processData: false,
+            dataType: "html",
+            success: function click(UserDetails) {
+
+                $("#projectContainer").html(UserDetails);
+
+            },
+            error: function () {
+
+                alert("Please fill the form correctly");
+            }
+
+
+        }
+        );
+    }
+    /// Delete loadview2().........................
+
+    function loadView2() {
+    $.ajax({
+
+        url: "/Project/ProjectList",
+        type: "Post",
+
+        contentType: false,
+        processData: false,
+        dataType: "html",
+        success: function click(result) {
+
+            $("#projectContainer").html(result);
+
+        },
+        error: function () {
+
+            alert("Please fill the form correctly");
+        }
+
+
+    }
+    );
+    }
+
+    ///  Update loadview3()......
+
+    function loadView3() {
+        $.ajax({
+
+            url: "/Project/ProjectList",
+            type: "Post",
+
+            contentType: false,
+            processData: false,
+            dataType: "html",
+            success: function click(result) {
+
+                $("#projectContainer").html(result);
+
+            },
+            error: function () {
+
+                alert("Please Update the form correctly");
+            }
+
+
+        }
+        );
+    }
+
+
+
+
+    //// Deletefunction.........
+   
+    function deletefunction(Id) {
+
+        var r = confirm("Are you sure want to Delete !");
+        if (r == true) {
+
+            $.ajax({
+
+                url: "/Project/DeleteProject/" + Id,
+                type: "Post",
+
+                contentType: false,
+                processData: false,
+                dataType: "json",
+                success: function (result) {
+                    if (result["status"] == true) {
+
+
+                        alert("Delete Succesfully")
+
+                        //location.reload();
+
+                        loadView2();
+
+
+                    }
+                    else {
+
+
+                        alert("Not Deleted Succesfully")
+
+                    }
+
+
+                },
+                error: function () {
+
+                    alert("Please check");
+                }
+            }
+
+            );
+
+
+        }
+    }
+
+
+
+
+    var project_id;
+
+    function projectEdit(Id) {
+
+        project_id = Id;
+
+
+        $.ajax({
+            url: "/Project/GetProject/" + Id,
+            type: "post",
+            processData: false,
+            contentType: false,
+
+
+            success: function click(result) {
+
+                var formateddate = moment(result["project_Completed"]).format("YYYY-MM-DD");
+
+                console.log(result)
+
+
+                $("#loaderDiv").hide();
+
+                $("#myModal2").modal('show');
+
+                $("#Name2").val(result['project_Name']);
+
+                $("#Status2").val(result['project_Status']);
+
+
+                $("#Completed2").val(formateddate);
+
+
+
+                $("#Description2").val(result['project_Description']);
+
+                console.log(result)
+            }
+        })
+    }
+
+
+</script>
+
+<script type="text/javascript">
+
+    var projectupdate = function () {
+
+        $("#hiddenprojectid2").val();
+        $("#myModal2").modal('hide');
+    }
+    var updatefunction = function () {
+        $("#loaderDiv").hide();
+        $("#myModal2").modal("hide");
+
+
+
+        var name = document.getElementById("Name2").value;
+        var decr = document.getElementById("Description2").value;
+        var status = document.getElementById("Status2").value;
+        var date = document.getElementById("Completed2").value;
+
+        frmData = new FormData();
+        frmData.append("Id", project_id);
+        frmData.append("Project_Name", name);
+        frmData.append("Project_Description", decr);
+        frmData.append("Project_Status", status);
+        frmData.append("Project_Completed", date);
+
+        $.ajax({
+            url: "/Project/UpdateProject",
+            type: "put",
+            data: frmData,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            success: function (result) {
+
+                if (result["status"] == true) {
+
+
+                    alert("Updated Succesfully")
+
+                    loadView3();
+
+
+                }
+                else {
+
+                    alert(" Not Updated")
+                }
+
+
+            },
+            error: function () {
+
+                alert("Please Fill the form Correctly");
+            }
+
+
+
+        });
+    }
+
+
+</script>
